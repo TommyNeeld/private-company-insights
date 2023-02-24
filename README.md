@@ -2,7 +2,8 @@
 
 Identify companies that are showing high growth and rank them using various metrics such as number of employees, app downloads, website visits, etc.
 
-This analysis also performs industry classification of companies based on their description, industry, category groups, and tags. This has been performed using zero-shot classification on a SagemMaker GPU instance - see the [taxonomy_zero_shot.ipynb](notebooks/taxonomy_zero_shot.ipynb) for more details.
+This repo also shows how companies can be classified into industry classifications using [zero-shot classification](https://huggingface.co/facebook/bart-large-mnli) on a SagemMaker GPU instance - see the [taxonomy_zero_shot.ipynb](notebooks/taxonomy_zero_shot.ipynb) for more details.
+
 ## Private Company App aka 'VC Insights'
 
 ~~Deployed on AWS App Runner [here](https://iw3awh3exj.eu-west-1.awsapprunner.com/)~~
