@@ -24,7 +24,9 @@ def _slope_of_array(series: pd.Series) -> float:
     return np.polyfit(x, y, 1)[0]
 
 
-def _normalized_growth(df: pd.DataFrame, metric: str) -> pd.DataFrame:
+def _normalized_growth(
+    df: pd.DataFrame, metric: str, with_quantile_transform=True
+) -> pd.DataFrame:
     """
     calculate the normalized growth of a metric
     """
@@ -47,9 +49,10 @@ def _normalized_growth(df: pd.DataFrame, metric: str) -> pd.DataFrame:
     normalized_growth[f"{metric}_slope"] = slopes
 
     # transform the slope using quantile_transform
-    normalized_growth[f"{metric}_slope"] = quantile_transform(
-        normalized_growth[[f"{metric}_slope"]], output_distribution="normal"
-    )
+    if with_quantile_transform:
+        normalized_growth[f"{metric}_slope"] = quantile_transform(
+            normalized_growth[[f"{metric}_slope"]], output_distribution="normal"
+        )
 
     return normalized_growth
 
@@ -73,7 +76,9 @@ def _final_kpi(df: pd.DataFrame, metrics: list[str]) -> pd.DataFrame:
     return df
 
 
-def preprocessor(df: pd.DataFrame, metrics=None) -> pd.DataFrame:
+def preprocessor(
+    df: pd.DataFrame, metrics=None, with_quantile_transform=True
+) -> pd.DataFrame:
     """
     get preprocessed data - with growth metrics and final KPI
     """
@@ -87,7 +92,9 @@ def preprocessor(df: pd.DataFrame, metrics=None) -> pd.DataFrame:
 
     for metric in metrics:
         # calculate the normalized growth rates
-        metric_growth_rates.append(_normalized_growth(df, metric))
+        metric_growth_rates.append(
+            _normalized_growth(df, metric, with_quantile_transform)
+        )
 
     # merge all growth rates into one df - based on Specter - ID
     _processed_data = pd.concat(metric_growth_rates, axis=1)
