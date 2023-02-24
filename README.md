@@ -12,6 +12,10 @@ When deployed:
 
 ![App](notebooks/docs/app.gif)
 
+### Running the App locally
+
+Install `requirements.txt` in chosen virtual environment. In the `src` directory run `python app.py` and navigate to http://127.0.0.1:8050/
+
 ### Deploying & Updating the App - AWS App Runner
 
 To deploy on AWS App Runner, first need to push a docker image to ECR. This can be done by running `./build_deploy_image_m1.sh` (for M1 silicon Macs only).
