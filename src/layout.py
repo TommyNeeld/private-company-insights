@@ -22,6 +22,10 @@ def get_layout(app):
                             [
                                 # metric selection
                                 html.H3("Selected metrics"),
+                                # small explanation
+                                html.P(
+                                    "Select the metrics you want to consider for the ranking. The ranking is the average of the normalised growth score for each of the metrics listed below."
+                                ),
                                 dcc.Dropdown(
                                     id="metric-dropdown",
                                     options=[
@@ -36,6 +40,9 @@ def get_layout(app):
                                 # slider for total funding selection
                                 html.Br(),
                                 html.H3("Select a total funding range"),
+                                html.P(
+                                    "Select the total funding range you want to consider for the ranking."
+                                ),
                                 dcc.RangeSlider(
                                     id="total-funding-slider",
                                     min=0,
@@ -62,6 +69,9 @@ def get_layout(app):
                                 # metric for figure
                                 html.Br(),
                                 html.H3("Select a metric for the figure"),
+                                html.P(
+                                    "Select the metric you want to see the growth of over time."
+                                ),
                                 dcc.Dropdown(
                                     id="figure-metric-dropdown", value="employees"
                                 ),
@@ -93,9 +103,6 @@ def get_layout(app):
                                     [
                                         # growth plot
                                         html.H3("Metric growth over time"),
-                                        html.P(
-                                            "To avoid issues with outliers, a quantile transform was applied to the slope data, this method transforms the features to follow a normal distribution."
-                                        ),
                                         dcc.Graph(id="growth-plot"),
                                         # table
                                         html.H3("Output table"),

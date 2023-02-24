@@ -46,12 +46,12 @@ def _normalized_growth(
         .sort_values(ascending=False)
     )
 
-    normalized_growth[f"{metric}_slope"] = slopes
+    normalized_growth[f"{metric} growth"] = slopes
 
     # transform the slope using quantile_transform
     if with_quantile_transform:
-        normalized_growth[f"{metric}_slope"] = quantile_transform(
-            normalized_growth[[f"{metric}_slope"]], output_distribution="normal"
+        normalized_growth[f"{metric} growth"] = quantile_transform(
+            normalized_growth[[f"{metric} growth"]], output_distribution="normal"
         )
 
     return normalized_growth
@@ -63,7 +63,7 @@ def _final_kpi(df: pd.DataFrame, metrics: list[str]) -> pd.DataFrame:
     """
     # final KPI is a weighted average of the slopes
     # NOTE: if the metric_slope if NaN, then it is ignored by pandas mean function
-    df["Ranking"] = df[[f"{metric}_slope" for metric in metrics]].mean(axis=1)
+    df["Ranking"] = df[[f"{metric} growth" for metric in metrics]].mean(axis=1)
 
     # normalise the final KPI from 0 to 1
     df["Ranking"] = (df["Ranking"] - df["Ranking"].min()) / (

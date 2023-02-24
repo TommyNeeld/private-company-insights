@@ -36,7 +36,7 @@ def callbacks(app):
         ]
 
         # plot
-        top_n_figure = 10
+        top_n_figure = 15
 
         data = (
             processed_data[settings.GROWTH_METRICS[metric]["growth"]]
@@ -73,7 +73,7 @@ def callbacks(app):
             "Website",
             settings.TOTAL_FUNDING_COL,
             "Ranking",
-        ] + [f"{metric}_slope" for metric in metrics]
+        ] + [f"{metric} growth" for metric in metrics]
 
         # only show 2 decimal places if float
         table_data = processed_data[columns].copy()
