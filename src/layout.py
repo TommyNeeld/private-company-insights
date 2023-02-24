@@ -21,7 +21,6 @@ def get_layout(app):
                         dbc.Col(
                             [
                                 # metric selection
-                                html.Br(),
                                 html.H3("Selected metrics"),
                                 dcc.Dropdown(
                                     id="metric-dropdown",
@@ -93,17 +92,19 @@ def get_layout(app):
                                 dbc.Spinner(
                                     [
                                         # growth plot
-                                        html.Br(),
                                         html.H3("Metric growth over time"),
+                                        html.P(
+                                            "To avoid issues with outliers, a quantile transform was applied to the slope data, this method transforms the features to follow a normal distribution."
+                                        ),
                                         dcc.Graph(id="growth-plot"),
                                         # table
-                                        html.H3("Output table - top 500"),
+                                        html.H3("Output table"),
                                         dash_table.DataTable(
                                             id="growth-table",
                                             style_table={
                                                 "overflowY": "scroll",
                                                 "overflowX": "scroll",
-                                                "height": "400px",
+                                                "height": "300px",
                                             },
                                             style_cell={
                                                 "textAlign": "left",
@@ -121,9 +122,9 @@ def get_layout(app):
                                                     "if": {"row_index": "odd"},
                                                     "backgroundColor": "rgb(248, 248, 248)",
                                                 },
-                                                # highlight growth_kpi column
+                                                # highlight Ranking column
                                                 {
-                                                    "if": {"column_id": "growth_kpi"},
+                                                    "if": {"column_id": "Ranking"},
                                                     "backgroundColor": "rgb(230, 230, 230)",
                                                     "fontWeight": "bold",
                                                 },
@@ -175,6 +176,49 @@ def _create_navbar(app):
                                     className="ms-2",
                                     style={"margin-left": "6rem"},
                                 )
+                            ),
+                            # modal button
+                            dbc.Col(
+                                dbc.Button(
+                                    "Open Taxonomy Report",
+                                    id="open-report-modal",
+                                    color="primary",
+                                    className="ms-2",
+                                    style={"margin-left": "6rem", "width": "250px"},
+                                )
+                            ),
+                            # button to download csv
+                            dbc.Col(
+                                dbc.Button(
+                                    "Download Taxonomy CSV",
+                                    id="download-csv-button",
+                                    color="primary",
+                                    className="ms-2",
+                                    style={"margin-left": "6rem", "width": "250px"},
+                                )
+                            ),
+                            dcc.Download(id="download-csv"),
+                            dbc.Modal(
+                                [
+                                    dbc.ModalHeader(
+                                        dbc.ModalTitle("Industry Classification Report")
+                                    ),
+                                    dbc.ModalBody(
+                                        "This is an extract of a notebook performing a zero-shot classification of companies in the dataset. The aim is to build a taxonomy model that can populate the 'New Industry' column with 'Finance', 'Health', or 'Finance; Health'."
+                                    ),
+                                    # iframe with report
+                                    html.Iframe(
+                                        src="assets/taxonomy_zero_shot.html",
+                                        style={
+                                            "border-width": "0",
+                                            "width": "100%",
+                                            "height": "800px",
+                                        },
+                                    ),
+                                ],
+                                id="report-modal",
+                                size="xl",
+                                is_open=False,
                             ),
                         ],
                         align="center",

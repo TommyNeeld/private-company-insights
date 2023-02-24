@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 from config import settings
+from sklearn.preprocessing import quantile_transform
 
 ADDITIONAL_COLUMNS = ["Company Name", "Website", settings.TOTAL_FUNDING_COL] + [
     settings.GROWTH_METRICS[key]["normalize_by"] for key in settings.GROWTH_METRICS
@@ -55,6 +56,11 @@ def _normalized_growth(df: pd.DataFrame, metric: str) -> pd.DataFrame:
 
     normalized_growth[f"{metric}_slope"] = slopes
 
+    # transform the slope using quantile_transform
+    normalized_growth[f"{metric}_slope"] = quantile_transform(
+        normalized_growth[[f"{metric}_slope"]], output_distribution="normal"
+    )
+
     return normalized_growth
 
 
@@ -64,20 +70,20 @@ def _final_kpi(df: pd.DataFrame, metrics: list[str]) -> pd.DataFrame:
     """
     # final KPI is a weighted average of the slopes
     # NOTE: if the metric_slope if NaN, then it is ignored by pandas mean function
-    df["growth_kpi"] = df[[f"{metric}_slope" for metric in metrics]].mean(axis=1)
+    df["Ranking"] = df[[f"{metric}_slope" for metric in metrics]].mean(axis=1)
 
     # normalise the final KPI from 0 to 1
-    df["growth_kpi"] = (df["growth_kpi"] - df["growth_kpi"].min()) / (
-        df["growth_kpi"].max() - df["growth_kpi"].min()
+    df["Ranking"] = (df["Ranking"] - df["Ranking"].min()) / (
+        df["Ranking"].max() - df["Ranking"].min()
     )
 
     # sort by final KPI
-    df = df.sort_values(by="growth_kpi", ascending=False)
+    df = df.sort_values(by="Ranking", ascending=False)
 
     return df
 
 
-def main(df: pd.DataFrame, top_n: int, metrics=[]) -> pd.DataFrame:
+def preprocessor(df: pd.DataFrame, metrics=None) -> pd.DataFrame:
     """
     get preprocessed data - with growth metrics and final KPI
     """
@@ -85,7 +91,8 @@ def main(df: pd.DataFrame, top_n: int, metrics=[]) -> pd.DataFrame:
     # calculate slopes for each metric
     metric_growth_rates = []
 
-    if metrics == []:
+    # if metrics is not specified, use all metrics
+    if metrics is None:
         metrics = settings.GROWTH_METRICS
 
     for metric in metrics:
@@ -100,8 +107,5 @@ def main(df: pd.DataFrame, top_n: int, metrics=[]) -> pd.DataFrame:
 
     # final KPI is a weighted average of the slopes
     processed_data = _final_kpi(processed_data, metrics)
-
-    # get top n
-    processed_data = processed_data.head(top_n)
 
     return processed_data

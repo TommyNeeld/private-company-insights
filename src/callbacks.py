@@ -1,8 +1,8 @@
 """callbacks for the app."""
 from config import settings
-from dash import Input, Output
+from dash import Input, Output, State, dcc
 import plotly.express as px
-from preprocess import main
+from preprocess import preprocessor
 from data_loader import load_data
 
 
@@ -26,7 +26,8 @@ def callbacks(app):
         df = load_data(settings.FILE_NAME)
 
         # preprocess data
-        processed_data = main(df, 500, metrics=metrics)
+        metrics = metrics if metrics else None
+        processed_data = preprocessor(df, metrics=metrics)
 
         # filter by total funding range settings.TOTAL_FUNDING_COL
         processed_data = processed_data[
@@ -70,8 +71,8 @@ def callbacks(app):
         columns = [
             "Company Name",
             "Website",
-            "growth_kpi",
             settings.TOTAL_FUNDING_COL,
+            "Ranking",
         ] + [f"{metric}_slope" for metric in metrics]
 
         # only show 2 decimal places if float
@@ -96,3 +97,24 @@ def callbacks(app):
             total_funding_range,
             figure_metric_dropdown_options,
         )
+
+    # modal
+    @app.callback(
+        Output("report-modal", "is_open"),
+        [Input("open-report-modal", "n_clicks")],
+        [State("report-modal", "is_open")],
+    )
+    def toggle_modal(n1, is_open):
+        if n1:
+            return not is_open
+        return is_open
+
+    @app.callback(
+        Output("download-csv", "data"),
+        Input("download-csv-button", "n_clicks"),
+        prevent_initial_call=True,
+    )
+    def func(n_clicks):
+        # load data (this is cached)
+        df = load_data(settings.FILE_NAME)
+        return dcc.send_data_frame(df.to_csv, "taxonomy_result.csv")

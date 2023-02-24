@@ -11,3 +11,8 @@ dash-tools
 nbformat
 pydantic
 dash_auth
+nltk
+transformers
+pytorch
+tqdm
+sagemaker

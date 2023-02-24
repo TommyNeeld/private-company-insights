@@ -7,7 +7,7 @@ from pydantic import BaseSettings
 class Settings(BaseSettings):
     PATH = pathlib.Path(__file__).parent
     DATA_PATH = PATH.joinpath("data").resolve()
-    FILE_NAME = "specter_data.csv"
+    FILE_NAME = "taxonomy_result.csv"
 
     # metric mapping for growth indicators
     GROWTH_METRICS = {
@@ -86,6 +86,28 @@ class Settings(BaseSettings):
                 "Total App Downloads - 4 Months Growth",
                 "Total App Downloads - 5 Months Growth",
                 "Total App Downloads - 6 Months Growth",
+            ],
+        },
+        "itunes_reviews": {
+            "normalize_by": "iTunes - Reviews",
+            "growth": [
+                "iTunes - Monthly Reviews Growth",
+                "iTunes - 2 Months Reviews Growth",
+                "iTunes - 3 Months Reviews Growth",
+                "iTunes - 4 Months Reviews Growth",
+                "iTunes - 5 Months Reviews Growth",
+                "iTunes - 6 Months Reviews Growth",
+            ],
+        },
+        "google_play_reviews": {
+            "normalize_by": "Google Play - Reviews",
+            "growth": [
+                "Google Play - Monthly Reviews Growth",
+                "Google Play - 2 Months Reviews Growth",
+                "Google Play - 3 Months Reviews Growth",
+                "Google Play - 4 Months Reviews Growth",
+                "Google Play - 5 Months Reviews Growth",
+                "Google Play - 6 Months Reviews Growth",
             ],
         },
     }
