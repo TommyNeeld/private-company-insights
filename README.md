@@ -143,8 +143,8 @@ Each company has useful taxonomy categorizing information to hand, these include
 - [x] preprocess data and generate metrics
 - [x] add visualizations for growth metrics
 - [x] create interactive components to dig through data
+- [x] add password protection
 - [ ] further exploration of the approach - see [ranking_exploration notebook](notebooks/ranking_exploration.ipynb)
-- [ ] add password protection
 
 ### Industry classification
 - [x] investigate industry classification task
