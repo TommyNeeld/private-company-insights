@@ -1,6 +1,9 @@
 # Specter Analysis
 
 ## Specrter App
+
+Deployed on AWS App Runner [here](https://iw3awh3exj.eu-west-1.awsapprunner.com/)
+
 ### Running the App
 
 Run `src/app.py` and navigate to http://127.0.0.1:8050/ in your browser.
