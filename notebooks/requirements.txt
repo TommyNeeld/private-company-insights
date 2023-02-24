@@ -1,0 +1,13 @@
+pandas
+matplotlib
+seaborn
+plotly 
+black
+pylint
+ipykernel
+dash
+dash-bootstrap-components
+dash-tools
+nbformat
+pydantic
+dash_auth
