@@ -4,9 +4,9 @@
 
 Deployed on AWS App Runner [here](https://iw3awh3exj.eu-west-1.awsapprunner.com/)
 
-### Running the App
+### Running the App locally
 
-Run `src/app.py` and navigate to http://127.0.0.1:8050/ in your browser.
+Install `requirements.txt` in chosen virtual environment. In the `src` directory run `python app.py` and navigate to http://127.0.0.1:8050/
 
 ### Deploying & Updating the App - Heroku
 **NO LONGER USED**
