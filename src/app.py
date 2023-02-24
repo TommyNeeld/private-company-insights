@@ -1,5 +1,5 @@
 """
-dash app for specter
+dash app for Private Company analysis
 """
 import dash_auth
 from dash import Dash
@@ -8,7 +8,9 @@ from layout import get_layout
 from callbacks import callbacks
 from config import settings
 
-app = Dash(__name__, title="specter-app", external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = Dash(
+    __name__, title="private-company-app", external_stylesheets=[dbc.themes.BOOTSTRAP]
+)
 
 # basic auth
 auth = dash_auth.BasicAuth(app, settings.VALID_USERNAME_PASSWORD_PAIRS)

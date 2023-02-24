@@ -119,7 +119,7 @@ class Settings(BaseSettings):
     DEFAULT_FUNDING_FILTER = 20000000
 
     # TODO: this should be a secret
-    VALID_USERNAME_PASSWORD_PAIRS = {"tommy": "specter"}
+    VALID_USERNAME_PASSWORD_PAIRS = {"tommy": "private-companies"}
 
     # set VERSION to default value
     VERSION = "0.0.0"

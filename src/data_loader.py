@@ -11,7 +11,7 @@ def load_data(data_file: str) -> pd.DataFrame:
     date_cols = ["Last Updated"]
     df = pd.read_csv(
         settings.DATA_PATH.joinpath(data_file),
-        index_col="Specter - ID",
+        index_col="ID",
         parse_dates=date_cols,
     )
 

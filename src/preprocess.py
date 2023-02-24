@@ -96,7 +96,7 @@ def preprocessor(
             _normalized_growth(df, metric, with_quantile_transform)
         )
 
-    # merge all growth rates into one df - based on Specter - ID
+    # merge all growth rates into one df - based on ID
     _processed_data = pd.concat(metric_growth_rates, axis=1)
 
     # add additional columns

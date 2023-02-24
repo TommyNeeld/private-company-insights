@@ -45,7 +45,7 @@ def callbacks(app):
         )
         data.index = range(1, len(data) + 1)
 
-        # mapping from specter ID to company name
+        # mapping from  ID to company name
         company_name_mapping = df["Company Name"].to_dict()
         data = data.rename(columns=company_name_mapping)
 

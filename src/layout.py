@@ -171,8 +171,8 @@ def _create_navbar(app):
                         [
                             dbc.Col(
                                 html.Img(
-                                    src=app.get_asset_url("specter-logo.png"),
-                                    height="30px",
+                                    src=app.get_asset_url("vc-insights-logo.png"),
+                                    height="100px",
                                 )
                             ),
                             dbc.Col(

@@ -1,21 +1,17 @@
-# Specter Analysis
+# Private Company Analysis
 
-## Specrter App
+Identify companies that are showing high growth and rank them using various metrics such as number of employees, app downloads, website visits, etc.
 
-Deployed on AWS App Runner [here](https://iw3awh3exj.eu-west-1.awsapprunner.com/)
+This analysis also performs industry classification of companies based on their description, industry, category groups, and tags. This has been performed using zero-shot classification on a SagemMaker GPU instance - see the [taxonomy_zero_shot.ipynb](notebooks/taxonomy_zero_shot.ipynb) for more details.
+## Private Company App aka 'VC Insights'
 
-### Running the App locally
+~~Deployed on AWS App Runner [here](https://iw3awh3exj.eu-west-1.awsapprunner.com/)~~
 
-Install `requirements.txt` in chosen virtual environment. In the `src` directory run `python app.py` and navigate to http://127.0.0.1:8050/
+When deployed:
 
-### Deploying & Updating the App - Heroku
-**NO LONGER USED**
-
-~~Install dashtools with `pip install dash-tools` and run `dashtools heroku --deploy` to deploy your app and `dashtools heroku --update` to update your app.~~
+![App](notebooks/docs/app.gif)
 
 ### Deploying & Updating the App - AWS App Runner
-
-_Heroku deployment had issues, due to being a new account, I could not updgrade to premium tiers and therefore suffered with performance issues._
 
 To deploy on AWS App Runner, first need to push a docker image to ECR. This can be done by running `./build_deploy_image_m1.sh` (for M1 silicon Macs only).
 
@@ -135,7 +131,6 @@ Cons:
 
 ### Ranking app
 - [x] make a simple dash app
-- [x] [deploy](https://dash.plotly.com/deployment)
 - [x] analyze potential growth metrics
 - [x] preprocess data and generate metrics
 - [x] add visualizations for growth metrics
