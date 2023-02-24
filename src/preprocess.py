@@ -32,20 +32,10 @@ def _normalized_growth(df: pd.DataFrame, metric: str) -> pd.DataFrame:
     # get the columns to calculate the growth
     growth_metric_cols = settings.GROWTH_METRICS[metric]["growth"]
 
-    # rows with missing values
-    # this does not include rows with all NaN
-    # rows_with_missing_values = ~df[growth_metric_cols].isna().all(axis=1)
-
     # calculate the growth
     normalized_growth = df.copy()[growth_metric_cols].apply(
         lambda x: x / df[settings.GROWTH_METRICS[metric]["normalize_by"]]
     )
-
-    # NOTE: no longer filling NaN with 0 - line of best fit will be able to estimate the growth based on previous points alone
-    # # fill NaN with 0 for rows with missing values
-    # normalized_growth.loc[
-    #     rows_with_missing_values, growth_metric_cols
-    # ] = normalized_growth.loc[rows_with_missing_values, growth_metric_cols].fillna(0)
 
     # calculate the slope of the line of each company
     slopes = (

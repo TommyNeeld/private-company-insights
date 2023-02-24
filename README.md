@@ -33,9 +33,17 @@ See `notebooks` for exploratory analysis.
 
 **Identify companies that are showing high growth and rank them**
 
-Growth is defined as a company's ability to increase its user base, revenue, or other metrics over time. Ideally we would have revenue data, but we don't. If a company is selling an app, we can use app downloads as a proxy for revenue. If a company is selling a service, we can use web visits as a proxy for revenue. Number of employees can also be used a proxy for revenue.
+Growth is defined as a company's ability to increase its user base, revenue, or other metrics over time. Ideally we would have revenue data, however if a company is selling an app, app downloads may work as a good proxy. Other metrics such as web vists, social media followers, number of employees, etc. could also be used. Indeed, the number of employees has been shown to have a strong relationship with revenue (see below).
 
-#### Employees
+The `GROWTH_METRICS` variable in `src/config.py` shows all the metrics used to calculate a ranking based on growth. For each metric, the monthly growth was available over a six month duration. To quantify the growth over this period and compare companies, linear regression was performed (if 3 or more data points were available) using least squares on each company for each metric. The slope of the line calculated was then used as a growth score for that metric.
+
+The slope was normalised with respect to the baseline of the metric so that a comparison between companies could be made. For example, the normalisation factor for employees growth was the `Employee Count` (again refer to the `GROWTH_METRICS` variable in `src/config.py`). This was so, a company with 5000 employees who added 100 employees to their workforce (2% increase) would have a slope that is much lower than a company with 50 employees who added 100 employees to their workforce (300% increase).
+
+When observing the growth score distributions of different metrics, it was found that some distributions had large outliers which could potentially inflate the impact of that metric on an overall 'Ranking' score. To manage this issue, the resultant metric slopes were transformed using a `quantile_transform` (see the `_normalized_growth` function in `src/preprocess.py`). This transformed the data to a normal distribution, with the outliers being pushed towards the mean. This was done to ensure that the outliers did not have a disproportionate impact on the overall ranking score.
+
+The overall ranking score was then calculated by taking the mean of the normalized slopes for each metric. A weighted mean would be an additional feature to consider.
+
+#### Note on Employees
 
 A [2012 blog by ProtoBi](https://protobi.com/post/revenue-per-employee-and-biologic-scaling-laws) shows that the number of employees is a good proxy for revenue. The plot shows that the number of employees is correlated with revenue via a power-law.
 
@@ -47,13 +55,6 @@ This scaling law basically means that if the number of employees doubles, the re
 
 One thing to note re. this relationship, it is derived on data for companies with between ~200-100,000 employees and as such, the relationship may not hold for companies with fewer employees.
 
-#### App Downloads
-
-App Downloads may be a little more difficult to use as a proxy for revenue as it depends on the type of business.
-
-#### Web Visits
-
-...
 
 
 ### Industry Classification
@@ -80,19 +81,19 @@ Cons:
 - No ability to modify
 - Large model - slow to run
 
-**Note:** can also be used to create an initial label set for later use e.g. [this](https://www.vennify.ai/generating-training-data-zero-shot/) article
+**Note:** can also be used to create an initial label set for later use e.g. [this](https://www.vennify.ai/generating-training-data-zero-shot/) article shows the application of zero-shot to create an initial label set on which a simple classifier can be trained & modified going forward.
 
 #### Fine-tuning approach
 
-[SetFit](https://github.com/huggingface/setfit) is a library that allows you to fine-tune a model on a limited set of labels. We can use this to fine-tune a model on the 3 classes.
+[SetFit](https://github.com/huggingface/setfit) is a library that allows you to fine-tune a model on a limited set of labels - in the 'few shot' regime. It is a recent approach and has shown very strong performance. It fine-tunes a sentence-transformer using contrastive siamese training with a classification head (typically log reg).
 
 Pros:
 - Shown to be high-performing in the few-shot regime
-- Requires limited training data
+- Only requires a small set of training data
 
 Cons:
 - Requires human-in-the-loop to label
-- Large model - slow to run 
+- Cold-start problem - need an initial set (can be based on keywords) 
 
 #### Naive classifier approach
 
@@ -127,10 +128,6 @@ Cons:
 | Financial Services, Health Care, Sports           | 1     |
 | Financial Services, Health Care, Lending and I... | 1     |
 ...
-
-#### Combining taxonomy info
-
-Each company has useful taxonomy categorizing information to hand, these include a company description, an 'old' industry classification, category grouping and tags.
 
 
 
