@@ -25,7 +25,7 @@ In AWS App Runner, create a new service, and select the ECR image. The service w
 
 ## Exploration
 
-See `notebooks` for exploratory analysis.
+See `notebooks/` directory for exploratory analysis.
 
 **NOTE:** The folder contains it's own `requirements.txt` file.
 
